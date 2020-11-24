@@ -1,0 +1,105 @@
+
+
+class Book {
+    constructor(book, author, type) {
+        this.book = book;
+        this.author = author;
+        this.type = type;
+    }
+}
+
+class Display {
+
+    add(book){
+        let tableBody = document.getElementById('tableBody');
+        let uiString = `<tr>
+                            <th scope="row">1</th>
+                            <td>${book.name}</td>
+                            <td>${book.author}</td>
+                            <td>${book.type}</td>
+                            // <td><button>Delete</button></td>
+                          </tr>`;
+        tableBody.innerHTML += uiString;
+    }
+
+    clear(){
+        let libraryForm = document.getElementById('libraryForm');
+        libraryForm.reset()
+
+    }
+
+
+
+    validate(book){
+        if(book.name.length < 2 || book.author.length < 2){
+            return false;
+    }else{
+        return true;
+    }
+    }
+    show(type, messageDisplay){
+        let message = document.getElementById('message');
+        let boldText;
+        if(type==='success'){
+            boldText = 'Success';
+        }else{
+            boldText = 'Error!';
+        }
+        message.innerHTML = `<div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                                <strong>${boldText}:</strong> ${displayMessage}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                                </button>
+                            </div>`;
+        setTimeout(function() {
+            message.innerHTML = '';
+        }, 5000);
+
+    }
+
+}
+
+
+
+let libraryForm = document.getElementById('libraryForm');
+libraryForm.addEventListener("input", libraryFormSubmit)
+
+function libraryFormSubmit(e) {
+    let bookName = document.getElementById('bookName').value;
+    let authorName = document.getElementById('authorName').value;
+    let type;
+    let fiction = document.getElementById('fiction');
+    let programming = document.getElementById('programming');
+    let history = document.getElementById('history');
+    let islamic = document.getElementById('islamic');
+    let others = document.getElementById('others');
+
+    if (fiction.selected) {
+        type = fiction.value;
+    }    else if(programming.selected.true){
+        type = programming.value;
+    }else if(islamic.selected){
+        type = islamic.value;
+    }else if(history.selected){
+        type = history.value;
+    }else if(others.selected){
+        type = others.value;
+    }
+
+
+    let book = new Book(name,author, type);
+
+    let display = new Display();
+
+    if(display.validate(book)){
+        
+        display.add(book);
+        display.clear()
+        display.show('success', 'Your book has been successfully added')
+    }
+    else{
+        display.show('danger', 'Sorry you cannot add this book')
+    }
+    e.prevent.display();
+
+}
